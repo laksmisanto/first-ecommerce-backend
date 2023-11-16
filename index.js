@@ -1,21 +1,17 @@
 require("dotenv").config();
 const express = require("express");
-const routes = require("./routes");
 const connectDB = require("./config/dbConfig");
 var cors = require("cors");
 const app = express();
+const router = require("./routes");
 
 //mongodb database connection
 connectDB();
 
-app.get("/", function (req, res) {
-  res.send("this is backend first file");
-});
-
-//init midilware
-// app.use(cors());
-// app.use(express.json());
-// app.use(routes);
+// init midilware
+app.use(cors());
+app.use(express.json());
+app.use(router);
 
 const Port = process.env.PORT || 8000;
 
