@@ -1,4 +1,4 @@
-function nameValidation({ name }) {
+function nameValidation(name) {
   if (!name) {
     return false;
   }
