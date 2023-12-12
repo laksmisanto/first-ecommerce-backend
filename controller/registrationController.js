@@ -1,9 +1,14 @@
+"use client";
 const nameValidation = require("../helpers/nameValidation");
 const emailValidation = require("../helpers/emailValidation");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
+const sendMail = require("../helpers/sendMail");
+const otpTemplate = require("../helpers/otpTemplate");
+const aleaRNGFactory = require("number-generator/lib/aleaRNGFactory");
 
-async function registrationController(req, res) {
+let registrationController = async (req, res) => {
+  //async function registrationController(req, res)
   try {
     const {
       firstName,
@@ -18,28 +23,29 @@ async function registrationController(req, res) {
       state,
     } = req.body;
 
-    if (!nameValidation(firstName)) {
-      return res.status(400).send({
-        error: "First Name Is Not Valid",
-      });
-    }
-    if (!nameValidation(lastName)) {
-      return res.status(400).send({
-        error: "Last Name Is Not Valid",
-      });
-    }
-    if (!emailValidation(email)) {
-      return res.status(400).send({
-        error: "Email Is Not Valid",
-      });
-    }
+    // if (!nameValidation(firstName)) {
+    //   return res.status(400).send({
+    //     error: "First Name Is Not Valid",
+    //   });
+    // }
+    // if (!nameValidation(lastName)) {
+    //   return res.status(400).send({
+    //     error: "Last Name Is Not Valid",
+    //   });
+    // }
+    // if (!emailValidation(email)) {
+    //   return res.status(400).send({
+    //     error: "Email Is Not Valid",
+    //   });
+    // }
+
     //password bcrypt
 
-    let exitingMail = await User.find({ email });
+    let existingMail = await User.find({ email });
 
-    if (exitingMail.length > 0) {
+    if (existingMail.length > 0) {
       return res.status(400).send({
-        error: "Email already exists",
+        error: "Email Already Exists",
       });
     }
 
@@ -57,6 +63,18 @@ async function registrationController(req, res) {
         state,
       });
       userData.save();
+
+      const generator2 = aleaRNGFactory(Date.now());
+      let randomOTP = generator2.uInt32().toString().substring(0, 4);
+      let randomOtpStore = await User.findOneAndUpdate(
+        { email },
+        { $set: { randomOTP: randomOTP } },
+        { new: true }
+      );
+
+      // sendMail(email, randomOtpStore, otpTemplate);
+      sendMail(email, randomOtpStore.randomOTP, otpTemplate);
+
       res.json({
         success: "Registration successfull",
         firstName: userData.firstName,
@@ -64,11 +82,9 @@ async function registrationController(req, res) {
         email: userData.email,
       });
     });
-
-    res.send(req.body);
   } catch (error) {
     res.send(error.message);
   }
-}
+};
 
 module.exports = registrationController;

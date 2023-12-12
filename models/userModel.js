@@ -4,43 +4,46 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   firstName: {
     type: String,
-    required: true,
+    // required: true,
   },
   lastName: {
     type: String,
-    required: true,
+    // required: true,
   },
   email: {
     type: String,
-    required: true,
+    // required: true,
   },
   password: {
     type: String,
-    required: true,
+    // required: true,
   },
   telephone: {
     type: String,
-    required: true,
+    // required: true,
   },
   address: {
     type: String,
-    required: true,
+    // required: true,
   },
   city: {
     type: String,
-    required: true,
+    // required: true,
   },
   postCode: {
     type: String,
-    required: true,
+    // required: true,
   },
   country: {
     type: String,
-    required: true,
+    // required: true,
   },
   state: {
     type: String,
-    required: true,
+    // required: true,
+  },
+  randomOTP: {
+    type: String,
   },
 });
 
