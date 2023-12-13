@@ -23,21 +23,21 @@ let registrationController = async (req, res) => {
       state,
     } = req.body;
 
-    // if (!nameValidation(firstName)) {
-    //   return res.status(400).send({
-    //     error: "First Name Is Not Valid",
-    //   });
-    // }
-    // if (!nameValidation(lastName)) {
-    //   return res.status(400).send({
-    //     error: "Last Name Is Not Valid",
-    //   });
-    // }
-    // if (!emailValidation(email)) {
-    //   return res.status(400).send({
-    //     error: "Email Is Not Valid",
-    //   });
-    // }
+    if (!nameValidation(firstName)) {
+      return res.status(400).send({
+        error: "First Name Is Not Valid",
+      });
+    }
+    if (!nameValidation(lastName)) {
+      return res.status(400).send({
+        error: "Last Name Is Not Valid",
+      });
+    }
+    if (!emailValidation(email)) {
+      return res.status(400).send({
+        error: "Email Is Not Valid",
+      });
+    }
 
     //password bcrypt
 
@@ -74,6 +74,15 @@ let registrationController = async (req, res) => {
 
       // sendMail(email, randomOtpStore, otpTemplate);
       sendMail(email, randomOtpStore.randomOTP, otpTemplate);
+
+      // setTimeout(async () => {
+      //   console.log("Delete your OTP");
+      //   let randomOtpStore = await User.findOneAndUpdate(
+      //     { email },
+      //     { $unset: { randomOTP: "" } },
+      //     { new: true }
+      //   );
+      // }, 8000);
 
       res.json({
         success: "Registration successfull",
