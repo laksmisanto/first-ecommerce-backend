@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
 async function loginController(req, res) {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
   let existingMail = await User.find({ email });
 
   if (!emailValidation(email)) {

@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 
 async function matchOTP(req, res) {
-  const { email, randomOTP } = req.body;
+  let { email, randomOTP } = req.body;
 
   let existingMail = await User.find({ email });
 
